@@ -2,7 +2,8 @@
 Ex07-Linux File-IO Systems-locking
 # AIM:
 To Write a C program that illustrates files copying and locking
-
+<h2>Developed by : Sanjay K </h2> 
+<h3>Register Number : 212223220094</h3>
 # DESIGN STEPS:
 
 ### Step 1:
@@ -21,22 +22,85 @@ Execute the C Program for the desired output.
 
 ## 1.To Write a C program that illustrates files copying 
 
+```
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdlib.h>
+int main()
+{
+    char block[1024];
+    int in, out;
+    int nread;
+    in = open("filecopy.c", O_RDONLY);
+    out = open("file.out", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
+    while((nread = read(in,block,sizeof(block))) > 0)
+    write(out,block,nread);
+    exit(0);}
+```
 
+## OUTPUT
 
+![image](https://github.com/Sandeepzxi/Linux-File-IO-Systems-locking/assets/168530813/1556ce4e-66f4-46fa-be8f-beb01d31b148)
 
 
 
 
 ## 2.To Write a C program that illustrates files locking
 
-
+```
+#include <fcntl.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/file.h>
+int main (int argc, char* argv[])
+{
+    char* file = argv[1];
+    int fd;
+    struct flock lock;
+    printf ("opening %s\n", file);
+    fd = open (file, O_WRONLY);
+    if (flock(fd, LOCK_SH) == -1)
+    {
+        printf("error");
+    }
+    else
+    {
+        printf("Acquiring shared lock using flock");
+    }
+    getchar();
+    if (flock(fd, LOCK_EX | LOCK_NB) == -1)
+    {
+        printf("error");
+    }
+    else
+    {
+        printf("Acquiring exclusive lock using flock");
+    }
+    getchar();
+    if (flock(fd, LOCK_UN) == -1)
+    {
+        printf("error");
+    }
+    else
+    {
+        printf("unlocking");
+    }
+    getchar();
+    close (fd);
+    return 0;
+}
+```
 
 
 ## OUTPUT
 
+![image](https://github.com/Sandeepzxi/Linux-File-IO-Systems-locking/assets/168530813/6621828b-bae1-44e6-aa10-f44ab9913017)
 
 
 
 
 # RESULT:
 The programs are executed successfully.
+
